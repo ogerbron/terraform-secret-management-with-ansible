@@ -22,7 +22,7 @@ Since you share your terraform code accross your team, you also have to share th
 - jq
 - terraform
 
-To run this example, simply move to the folder `terraform-example`, and run:
+To run this example, launch:
 
 ```bash
 cd terraform-example
