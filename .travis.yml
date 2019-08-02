@@ -6,6 +6,7 @@ env:
   - ANSIBLE_VERSION=latest
 
 before_install:
+  - echo > requirements.txt
   - sudo apt-get update -q
 
 install_ansible:

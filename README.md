@@ -1,5 +1,7 @@
 # terraform-secret-management-with-ansible
 
+[![Build Status](https://travis-ci.org/ogerbron/terraform-secret-management-with-ansible.svg?branch=master)](https://travis-ci.org/ogerbron/terraform-secret-management-with-ansible/)
+
 A quick example of how to handle Terraform secret in your repository by using Ansible Vault encryption feature.
 
 Here is the use case:
