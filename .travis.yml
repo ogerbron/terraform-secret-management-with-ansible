@@ -1,0 +1,30 @@
+---
+language: python
+python: "2.7"
+
+env:
+  - ANSIBLE_VERSION=latest
+
+before_install:
+  - sudo apt-get update -q
+
+install_ansible:
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
+  - pip install ansible-lint
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+
+install_terraform:
+  - export URL="https://releases.hashicorp.com/terraform"
+  - export VER="$(curl -sL $URL | egrep -v 'beta|alpha' | grep -Po "_(\d*\.?){3}" | sed 's/_//' | sort -V | tail -1)"
+  - export ZIP="terraform_${VER}_linux_amd64.zip"
+  - echo "* Downloading ${URL}/${VER}/terraform_${VER}_linux_amd64.zip"
+  - curl -s ${URL}/${VER}/terraform_${VER}_linux_amd64.zip -o ${ZIP}
+  - echo "* Extracting $ZIP into /usr/bin"
+  - unzip -o $ZIP -d /usr/bin && rm -v ${INSTALL_DIR}/$ZIP
+
+test:
+  - cd terraform-example
+  - export ANSIBLE_VAULT_PASSWORD_FILE=$(pwd)/../.ansible_vault_file
+  - terraform init
+  - terraform apply > terraform-output.txt
+  - if [ -z "$(grep i_am_batman terraform-output.txt)" ]; then exit 1; fi
